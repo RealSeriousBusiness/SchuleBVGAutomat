@@ -1,12 +1,11 @@
-package de.oszimt.fos.fahrkartenautomat.view.event;
+package de.oszimt.fos.fahrkartenautomat.model;
 
-public enum CallbackID {
-	
+public enum Callbacks {
 	ERROR(0), MSG_REC(1);
 	
 	private final int value;
 	
-    private CallbackID(int value) {
+    private Callbacks(int value) {
         this.value = value;
     }
 

@@ -1,5 +1,8 @@
 package de.oszimt.fos.fahrkartenautomat.view;
 
+import java.awt.Dimension;
+
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,32 +11,42 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+/**
+ * @author name
+ * Erlaubt die Eingabe eines Pins
+ */
 public class PINEingabe extends Stage
 {
 
 	public PINEingabe()
 	{
-		VBox main = new VBox();
+		VBox main = new VBox(10);
+		main.setPadding(new Insets(10));
 		
 		Label toPay = new Label("Zu zahlen: ");
 		TextField pinInput = new TextField();
 		
-		
-		
-		
 		GridPane gp = new GridPane();
+		gp.setHgap(20);
+		gp.setVgap(20);
+		gp.setPadding(new Insets(10));
 		for(int i = 0; i < 4; i++)
 			for(int j = 0; j < 3; j++)
-				gp.add(new Button("0"), j, i);
+			{
+				IntButton btn = new IntButton("0", new Dimension(40, 30));
+				gp.add(btn, j, i);
+			}
+				
+		IntButton submit = new IntButton("Bestätigen", new Dimension(100, 30));
 		
-		
-		main.getChildren().addAll(toPay, pinInput, gp, new Button("Bestätigen"));
+		main.getChildren().addAll(toPay, pinInput, gp, submit);
 		
 		
 		
 		this.setTitle("Pin-Eingabe");
 		this.setScene(new Scene(main));
-		this.sizeToScene();
+		//this.sizeToScene();
 		
 	}
 }
