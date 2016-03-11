@@ -170,8 +170,9 @@ public class MainWindow extends Application implements ActionListener {
 		primaryStage.show();
 		
 		
+		
+		//showSideWindow(new PINEingabe(), primaryStage);
 		showSideWindow(new GeldBörse(), primaryStage);
-		showSideWindow(new PINEingabe(), primaryStage);
 	}
 	
 	private void showSideWindow(Stage window, Stage src)

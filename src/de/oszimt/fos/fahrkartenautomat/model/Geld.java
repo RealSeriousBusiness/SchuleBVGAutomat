@@ -45,6 +45,9 @@ public class Geld {
 				unvalidMonies[unvalidPos++] = selected;
 		}
 		
+		int i = 0;
+		i++;
+		
 	}
 	
 	private Geld(double value, boolean isUseable, boolean isBill) {
