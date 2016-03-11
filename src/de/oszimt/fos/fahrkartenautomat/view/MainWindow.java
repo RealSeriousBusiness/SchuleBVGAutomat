@@ -12,19 +12,28 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import de.oszimt.fos.fahrkartenautomat.controller.AutomatController;
+import de.oszimt.fos.fahrkartenautomat.controller.AuftragsController;
 import de.oszimt.fos.fahrkartenautomat.controller.GeräteController;
-import de.oszimt.fos.fahrkartenautomat.model.Callbacks;
+import de.oszimt.fos.fahrkartenautomat.model.Ausgaben;
+import de.oszimt.fos.fahrkartenautomat.model.Fahrkartentyp;
 import de.oszimt.fos.fahrkartenautomat.view.event.MainWindowActions;
 
 
@@ -34,32 +43,34 @@ import de.oszimt.fos.fahrkartenautomat.view.event.MainWindowActions;
  */
 public class MainWindow extends Application implements ActionListener {
 
-	AutomatController automat = null;
-	ArrayList<IntButton> listButtons = new ArrayList<IntButton>();
+	AuftragsController automat = null;
+	ArrayList<DataButton<Fahrkartentyp>> listButtons = new ArrayList<DataButton<Fahrkartentyp>>();
 	
 
 	TextField tfEinwurf  = new TextField();
 	TextField tfZuZahlen = new TextField();
-	TextArea taAusgabe   = new TextArea();
+	TextFlow output = new TextFlow();
 	
 	MainWindowActions evts = new MainWindowActions();
 
 	public MainWindow() {
 		GeräteController geraet = new GeräteController(0, 0, 9999, this);
-		automat = new AutomatController(geraet);
+		automat = new AuftragsController(geraet);
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Callbacks callback = Callbacks.values()[e.getID()];
-		
-		switch(callback)
+		Ausgaben result = Ausgaben.values()[e.getID()];
+
+		switch(result)
 		{
-		case MSG_REC:
+		case OUT_OF_ORDER:
 			break;
-		case ERROR:
-		
+		case TICKET:
+			break;
+		case CHANGE:
+			break;
 		default:
 			break;
 		
@@ -84,7 +95,7 @@ public class MainWindow extends Application implements ActionListener {
 		tfEinwurf.setText("9999,00 €");
 		//tfEinwurf.setOnAction(new EinwurfListener(automatDemo, tfZuZahlen, taAusgabe));
 		
-		IntButton cancel = new IntButton("Abbrechen", new Dimension(100, 30));
+		DataButton<Integer> cancel = new DataButton<Integer>("Abbrechen", new Dimension(100, 30));
 		
 		// !!--Rechte Seite container--!!
 		VBox vbRight = new VBox(10);
@@ -100,10 +111,13 @@ public class MainWindow extends Application implements ActionListener {
 		pnButtons.setVgap(20);
 		pnButtons.setPrefColumns(2);
 		pnButtons.setAlignment(Pos.TOP_CENTER);
-		for (int i = 0; i < 10; i++) {
-			IntButton btnTicket = new IntButton("Demo Ticket", new Dimension(140, 30), i);
+		for (int i = 0; i < Fahrkartentyp.tickets.length; i++) {
+			Fahrkartentyp ticket = Fahrkartentyp.tickets[i];
+			DataButton<Fahrkartentyp> btnTicket = new DataButton<Fahrkartentyp>
+			(ticket.getName() + '\n' + ticket.getPrice() + '€', new Dimension(170, 50), ticket);
+			btnTicket.setAlignment(Pos.CENTER_LEFT);
+			btnTicket.setOnAction(evts.getSelectTicket());
 			//TicketListener ändert Textfields zuzahlen und ausgabe
-			//btnTicket.setOnAction(new TicketListener(automatDemo, tfZuZahlen, taAusgabe));
 			pnButtons.getChildren().add(btnTicket);
 		}
 
@@ -116,7 +130,8 @@ public class MainWindow extends Application implements ActionListener {
 		pnZuZahlen.getChildren().addAll(lbZahlbetrag, tfZuZahlen);
 		
 		HBox pnAnzahl = new HBox(10);
-		Spinner<Integer> ticketCounter = new Spinner<Integer>();
+		Spinner<Integer> ticketCounter = new Spinner<Integer>(10, 100, 10);
+
 		ticketCounter.valueProperty().addListener(evts.getSpinnerCount());
 		ticketCounter.setPrefWidth(70);
 		pnAnzahl.setAlignment(Pos.CENTER_LEFT);
@@ -129,10 +144,12 @@ public class MainWindow extends Application implements ActionListener {
 		AnchorPane.setRightAnchor(pnZuZahlen, 0.0);
 
 		
-		taAusgabe.setPrefSize(380, 100);
-		taAusgabe.setEditable(false);
-		ScrollPane scAusgabe = new ScrollPane(taAusgabe);	
+		output.setPadding(new Insets(0, 6, 0, 6));
+		ScrollPane scAusgabe = new ScrollPane(output);
+		scAusgabe.setStyle("-fx-background: white;");
+		scAusgabe.setPrefSize(380, 100);
 		
+
 		// !!--Mittel Container--!!
 		VBox vbCenter = new VBox(5);
 		vbCenter.getChildren().addAll(pnButtons, bottom, scAusgabe);
@@ -167,7 +184,9 @@ public class MainWindow extends Application implements ActionListener {
 
 	public static void main(String argv[]) {
 		// TODO Auto-generated method stub
+		System.out.println("well hello...");
 		launch(argv);
+		
 	}
 
 

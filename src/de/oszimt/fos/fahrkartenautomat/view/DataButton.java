@@ -11,38 +11,38 @@ import javafx.scene.text.FontWeight;
  * @author name
  * Button, welcher einen int-Wert in sich speichert
  */
-public class IntButton extends Button {
+public class DataButton<T> extends Button {
 
-	private int id = -1;
+	private T data = null;
 
-	public IntButton(String label, String style, 
-			FontWeight font, int fontSize, Dimension size, int id)
+	public DataButton(String label, String style, 
+			FontWeight font, int fontSize, Dimension size, T data)
 	{
 		super();
 		this.setText(label);
 		this.setStyle(style);
 		this.setFont(Font.font(null, FontWeight.BOLD, fontSize));
 		this.setPrefSize(size.getWidth(), size.getHeight());
-		this.id = id;
+		this.data = data;
 		
 	}
 	
-	public IntButton(String label, String style, 
+	public DataButton(String label, String style, 
 			FontWeight font, int fontSize, Dimension size)
 	{
-		this(label, style, font, fontSize, size, -1);
+		this(label, style, font, fontSize, size, null);
 	}
 
-	public IntButton(String label, Dimension size, int id)
+	public DataButton(String label, Dimension size, T data)
 	{
 		this(label, "-fx-background-color:orange", 
 				FontWeight.BOLD, 14, size);
-		this.id = id;
+		this.data = data;
 	}
 	
-	public IntButton(String label, Dimension size)
+	public DataButton(String label, Dimension size)
 	{
-		this(label, size, -1);
+		this(label, size, null);
 	}
 	
 	/*
@@ -54,8 +54,8 @@ public class IntButton extends Button {
 		this.setPrefSize(140, 30);
 	 */
 
-	public int getIntValue() {
-		return id;
+	public T getDataField() {
+		return data;
 	}
 
 }

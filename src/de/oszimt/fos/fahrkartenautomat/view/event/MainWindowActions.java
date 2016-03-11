@@ -17,7 +17,7 @@ public class MainWindowActions {
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
+			System.out.println("select dem shit");
 			
 		}
 	};
@@ -35,7 +35,7 @@ public class MainWindowActions {
 
 		@Override
 		public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-			System.out.println("changed.");
+			System.out.println("changed." + observable.toString());
 			
 		}
 	};

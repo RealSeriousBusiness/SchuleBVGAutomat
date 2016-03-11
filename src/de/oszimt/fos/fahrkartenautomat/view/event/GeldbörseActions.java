@@ -1,7 +1,8 @@
 package de.oszimt.fos.fahrkartenautomat.view.event;
 
-import de.oszimt.fos.fahrkartenautomat.controller.AutomatController;
-import de.oszimt.fos.fahrkartenautomat.view.IntButton;
+import de.oszimt.fos.fahrkartenautomat.controller.AuftragsController;
+import de.oszimt.fos.fahrkartenautomat.model.Geld;
+import de.oszimt.fos.fahrkartenautomat.view.DataButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -14,19 +15,18 @@ public class GeldbörseActions {
 
 	EventHandler<ActionEvent> buttonMoney = new EventHandler<ActionEvent>() {
 
-		AutomatController automat = AutomatController.getSingleton();
+		AuftragsController automat = AuftragsController.getSingleton();
 		
 		@Override
 		public void handle(ActionEvent event) {
 			
 			Object src = event.getSource();
-			if(src != IntButton.class)
+			if(src != DataButton.class)
 				return;
 			
-			IntButton button = (IntButton)src;
-			automat.insertCash(button.getIntValue());
-			
-			
+			DataButton<Geld> button = (DataButton<Geld>)src;
+			automat.insertCash(button.getDataField());
+
 		}
 	};
 

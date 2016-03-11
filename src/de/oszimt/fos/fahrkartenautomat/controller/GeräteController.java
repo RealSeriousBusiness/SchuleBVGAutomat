@@ -3,8 +3,9 @@ package de.oszimt.fos.fahrkartenautomat.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import de.oszimt.fos.fahrkartenautomat.model.Callbacks;
+import de.oszimt.fos.fahrkartenautomat.model.Ausgaben;
 import de.oszimt.fos.fahrkartenautomat.model.Fahrkartentyp;
+import de.oszimt.fos.fahrkartenautomat.model.Geld;
 import de.oszimt.fos.fahrkartenautomat.model.MoneySet;
 
 
@@ -28,54 +29,60 @@ public class GeräteController
 		totalMoney.setValue(money);
 		this.outputTarget = outputTarget;
 	}
+	
+	private void respond(String msg, Ausgaben outputType)
+	{
+		ActionEvent evt = new ActionEvent(this, outputType.id(), msg);
+		outputTarget.actionPerformed(evt);
+	}
 
-	public void printTicket(Fahrkartentyp ticket, int count)
+	public void printTicket(Fahrkartentyp ticket, boolean fourway, int count)
 	{
 		//todo:delay?
-		
 		StringBuilder sb = new StringBuilder();
-		sb.append("Ticketausgabe:\n");
-		for(int i = 0; i < count; i++)
-		{
-			//sb.append(ticket.getName()).append('\n');
-		}
-		
-		ActionEvent evt = new ActionEvent(this, Callbacks.MSG_REC.id(), sb.toString());
-		outputTarget.actionPerformed(evt);
+		String name = (fourway ? "4-Fahrten-" : "") + ticket.getName();
+		sb.append(count).append(name).append(":")
+		.append(ticket.getDescription()).append("\n");
+
+		respond(sb.toString(), Ausgaben.TICKET);
 	}
 	
-	public void outputChange(double[] change)
+	public void outputChange(MoneySet change)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("Rückgabe, Münzen:\n");
-		for(int i = 0; i < change.length; i++)
+		double value = change.getValue();
+		sb.append(value).append("\n");
+		for(int i = 0; i < Geld.getValidCount(); i++)
 		{
-			sb.append(change[i]).append('\n');
+			Geld selected = Geld.validMonies[i];
+			int count = change.getCount(selected);
+			if(count > 0)
+				sb.append(count).
+				append("x ").append(selected.getValue()).append("€");
 		}
-		String d = sb.toString();
 		
-		ActionEvent evt = new ActionEvent(null, Callbacks.MSG_REC.id(), d);
-		
-		outputTarget.actionPerformed(evt);
+		respond(sb.toString(), Ausgaben.CHANGE);
 		
 	}
 	
-	public void addCash(double cash){
-		
+	public void addCash(MoneySet cash){
+		totalMoney.add(cash);
 	}
 	
 	public double getInkState(){
-		return 0.0;
+		return ink;
 	}
 	
 	public double getPaperState(){
-		return 0.0;
+		return paper;
+	}
+	
+	public void informLowResources(){
+		respond("", Ausgaben.OUT_OF_ORDER);
 	}
 	
 	public void setOutputHandler(ActionListener outputTarget){
 		this.outputTarget = outputTarget;
 	}
-	
-	
-	
+
 }

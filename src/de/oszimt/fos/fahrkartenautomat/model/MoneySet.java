@@ -8,28 +8,38 @@ package de.oszimt.fos.fahrkartenautomat.model;
  */
 public class MoneySet {
 	public final static double[] values = null;
-	private int[] counts;
+	private int[] counts = new int[Geld.getValidCount()];
 	
 	public MoneySet(){};
 	
-	public void add(double geld){
+	public void add(Geld geld){
+		counts[geld.getValidId()]++;
+	}
+	
+	public void add(MoneySet geld){
 		
 	}
 	
-	public int getCount(double type){
-		return 0;
+	public int getCount(Geld geld){
+		return counts[geld.getValidId()];
 	}
 	
 	public double getValue(){
-		return 0.0;
+		double value = 0.0;
+		for (int id = 0; id < Geld.getValidCount(); id++)
+			value += Geld.validMonies[id].getValue() * counts[id];
+		return value;
 	}
 	
 	public void setValue(double value){
+		counts[0] = 10; //5 cent
+		counts[5] = 10; //1 euro
 		
 	}
 	
-	public void setValue(double value, MoneySet pool){
-		
+	public boolean setValue(double value, MoneySet pool){
+		setValue(value);
+		return false;
 	}
 	
 }

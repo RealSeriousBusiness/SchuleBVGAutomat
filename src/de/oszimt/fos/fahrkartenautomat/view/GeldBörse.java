@@ -2,6 +2,7 @@ package de.oszimt.fos.fahrkartenautomat.view;
 
 import java.awt.Dimension;
 
+import de.oszimt.fos.fahrkartenautomat.model.Geld;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -29,7 +30,7 @@ public class GeldBörse extends Stage {
 		
 		for(int i = 0; i < 8; i++)
 		{
-			IntButton btn = new IntButton("0", new Dimension(40, 30));
+			DataButton<Geld> btn = new DataButton<Geld>("0", new Dimension(40, 30));
 			muenzen.getChildren().add(btn);
 		}
 			
@@ -39,9 +40,10 @@ public class GeldBörse extends Stage {
 		scheine.setPadding(new Insets(10));
 		scheine.setVgap(15);
 		scheine.setHgap(15);
+		
 		for(int i = 0; i < 7; i++)
 		{
-			IntButton btn = new IntButton("0", new Dimension(40, 30));
+			DataButton<Geld> btn = new DataButton<Geld>("0", new Dimension(40, 30));
 			scheine.getChildren().add(btn);
 		}
 			
@@ -51,7 +53,7 @@ public class GeldBörse extends Stage {
 		
 		this.setTitle("Geldbörse");
 		this.setScene(new Scene(main));
-		this.setWidth(230);
+		this.setWidth(212);
 		//this.sizeToScene();
 	}
 }

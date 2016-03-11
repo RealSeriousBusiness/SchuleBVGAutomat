@@ -34,11 +34,11 @@ public class PINEingabe extends Stage
 		for(int i = 0; i < 4; i++)
 			for(int j = 0; j < 3; j++)
 			{
-				IntButton btn = new IntButton("0", new Dimension(40, 30));
+				DataButton<Integer> btn = new DataButton<Integer>("0", new Dimension(40, 30));
 				gp.add(btn, j, i);
 			}
 				
-		IntButton submit = new IntButton("Bestätigen", new Dimension(100, 30));
+		DataButton<Integer> submit = new DataButton<Integer>("Bestätigen", new Dimension(100, 30));
 		
 		main.getChildren().addAll(toPay, pinInput, gp, submit);
 		
