@@ -1,0 +1,3 @@
+Bugs:
+-strange behaviour if ticket selection is changed after count and ticket already have been set
+-cancel button does not reset count
