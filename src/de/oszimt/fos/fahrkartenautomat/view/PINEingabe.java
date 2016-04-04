@@ -4,7 +4,6 @@ import java.awt.Dimension;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -34,7 +33,8 @@ public class PINEingabe extends Stage
 		for(int i = 0; i < 4; i++)
 			for(int j = 0; j < 3; j++)
 			{
-				DataButton<Integer> btn = new DataButton<Integer>("0", new Dimension(40, 30));
+				int number = (i * 3) + j + 1;
+				DataButton<Integer> btn = new DataButton<Integer>(String.valueOf(number), new Dimension(40, 30));
 				gp.add(btn, j, i);
 			}
 				

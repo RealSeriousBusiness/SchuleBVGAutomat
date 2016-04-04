@@ -1,12 +1,9 @@
 package de.oszimt.fos.fahrkartenautomat.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import de.oszimt.fos.fahrkartenautomat.model.Ausgaben;
-import de.oszimt.fos.fahrkartenautomat.model.Fahrkartentyp;
 import de.oszimt.fos.fahrkartenautomat.model.Geld;
 import de.oszimt.fos.fahrkartenautomat.model.MoneySet;
+import de.oszimt.fos.fahrkartenautomat.view.event.AutomatUpdater;
 
 
 /**
@@ -18,71 +15,91 @@ public class GeräteController
 {
 	double ink, paper;
 	MoneySet totalMoney;
-	ActionListener outputTarget;
+	AutomatUpdater src;
+	private final String SEPERATOR = "\n-----------\n";
 	
-	public GeräteController(double paper, double ink, 
-			double money, ActionListener outputTarget)
+	public GeräteController(AutomatUpdater outputTarget)
 	{
-		this.ink = ink;
-		this.paper = paper;
-		this.totalMoney = new MoneySet();
-		totalMoney.setValue(money);
-		this.outputTarget = outputTarget;
+		MoneySet ms = new MoneySet();
+		Geld[] g = Geld.validMonies;
+		for(int i = 0; i < g.length; i++)
+			ms.add(g[i], 1000);
+		this.totalMoney = ms;
+		this.ink = 1000.0;
+		this.paper = 1000.0;
+		this.src = outputTarget;
 	}
 	
-	private void respond(String msg, Ausgaben outputType)
+	public void msg(String msg, boolean red)
 	{
-		ActionEvent evt = new ActionEvent(this, outputType.id(), msg);
-		outputTarget.actionPerformed(evt);
+		src.handle(red ? Ausgaben.RED_TEXT : Ausgaben.NORMAL_TEXT ,
+				msg + '\n');
+	}
+	
+	public void selection(int ticketId, int count, double price)
+	{
+		src.handle(Ausgaben.SELECT_UPDATE, ticketId);
+		src.handle(Ausgaben.TOPAY_UPDATE, price + " €");
+	}
+	
+	public void resetView()
+	{
+		src.handle(Ausgaben.SELECT_UPDATE, -1);
+		src.handle(Ausgaben.TOPAY_UPDATE, "0.00 €");
+		src.handle(Ausgaben.PAID_UPDATE, "0.00 €");
+	}
+	
+	public void insertedMoney(double money)
+	{
+		src.handle(Ausgaben.PAID_UPDATE, money + " €");
 	}
 
-	public void printTicket(Fahrkartentyp ticket, boolean fourway, int count)
+	public void giveChange(MoneySet change)
 	{
-		//todo:delay?
+		src.handle(Ausgaben.NORMAL_TEXT, "Geld wird zurückgegeben..." + SEPERATOR);
 		StringBuilder sb = new StringBuilder();
-		String name = (fourway ? "4-Fahrten-" : "") + ticket.getName();
-		sb.append(count).append(name).append(":")
-		.append(ticket.getDescription()).append("\n");
-
-		respond(sb.toString(), Ausgaben.TICKET);
-	}
-	
-	public void outputChange(MoneySet change)
-	{
-		StringBuilder sb = new StringBuilder();
-		double value = change.getValue();
-		sb.append(value).append("\n");
-		for(int i = 0; i < Geld.getValidCount(); i++)
+		Geld[] g = Geld.validMonies;
+		for(int i = 0; i < g.length; i++)
 		{
-			Geld selected = Geld.validMonies[i];
+			Geld selected = g[i];
 			int count = change.getCount(selected);
 			if(count > 0)
-				sb.append(count).
-				append("x ").append(selected.getValue()).append("€");
+			{
+				sb.append(count + "x " + selected.getValueDecimal() + "€\n");
+			}
 		}
-		
-		respond(sb.toString(), Ausgaben.CHANGE);
-		
+		sb.append(SEPERATOR);
+		src.handle(Ausgaben.NORMAL_TEXT, sb.toString());
+		src.handle(Ausgaben.NORMAL_TEXT, "Gesamt: " + change.calcValueDecimal() + "€\n\n");
 	}
 	
+	public void singleChange(double value)
+	{
+		src.handle(Ausgaben.NORMAL_TEXT, "Rückgabe: " + value + " €\n");
+	}
+	
+	public void printTicket(String ticketName, double price, int singles, int fourways)
+	{
+		ink--;
+		paper--;
+		src.handle(Ausgaben.NORMAL_TEXT, "Tickets werden gedruckt..." + SEPERATOR);
+		StringBuilder sb = new StringBuilder();
+		if(singles > 0)
+			sb.append(singles + "x " + ticketName + "\n");
+		if(fourways > 0)
+			sb.append(fourways + "x " + "4-Fahrten-" + ticketName);
+		sb.append(SEPERATOR);
+		src.handle(Ausgaben.NORMAL_TEXT, sb.toString());
+		src.handle(Ausgaben.NORMAL_TEXT, "Gesamt: " + price + " €\n");
+		
+	}
+
 	public void addCash(MoneySet cash){
-		totalMoney.add(cash);
+		totalMoney.merge(cash);
 	}
 	
-	public double getInkState(){
-		return ink;
-	}
-	
-	public double getPaperState(){
-		return paper;
-	}
-	
-	public void informLowResources(){
-		respond("", Ausgaben.OUT_OF_ORDER);
-	}
-	
-	public void setOutputHandler(ActionListener outputTarget){
-		this.outputTarget = outputTarget;
+	public void removeCash(MoneySet cash){
+		totalMoney.substract(cash);
 	}
 
 }

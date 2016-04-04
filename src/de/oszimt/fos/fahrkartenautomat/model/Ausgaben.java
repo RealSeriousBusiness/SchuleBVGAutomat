@@ -1,15 +1,14 @@
 package de.oszimt.fos.fahrkartenautomat.model;
 
 public enum Ausgaben {
-	OUT_OF_ORDER(0), ORDER_UPDATE(1), TICKET(2), CHANGE(3);
+	SELECT_UPDATE, 
+	TOPAY_UPDATE, 
 	
-	private final int value;
+	PAID_UPDATE, 
 	
-    private Ausgaben(int value) {
-        this.value = value;
-    }
+	NORMAL_TEXT, 
+	RED_TEXT, 
+	
+	OUT_OF_ORDER
 
-    public int id() {
-        return value;
-    }
 }

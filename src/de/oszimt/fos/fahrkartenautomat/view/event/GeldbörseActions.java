@@ -17,11 +17,11 @@ public class GeldbörseActions {
 
 		AuftragsController automat = AuftragsController.getSingleton();
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public void handle(ActionEvent event) {
-			
 			Object src = event.getSource();
-			if(src != DataButton.class)
+			if(!(src instanceof DataButton))
 				return;
 			
 			DataButton<Geld> button = (DataButton<Geld>)src;

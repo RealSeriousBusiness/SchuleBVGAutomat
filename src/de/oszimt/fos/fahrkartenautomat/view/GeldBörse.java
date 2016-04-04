@@ -3,6 +3,7 @@ package de.oszimt.fos.fahrkartenautomat.view;
 import java.awt.Dimension;
 
 import de.oszimt.fos.fahrkartenautomat.model.Geld;
+import de.oszimt.fos.fahrkartenautomat.view.event.GeldbörseActions;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -17,10 +18,10 @@ import javafx.stage.Stage;
  */
 public class GeldBörse extends Stage {
 	
+	GeldbörseActions evts = new GeldbörseActions();
 	public GeldBörse()
 	{
-		
-		
+
 		VBox main = new VBox(10);
 		main.setPadding(new Insets(10));
 		
@@ -38,53 +39,24 @@ public class GeldBörse extends Stage {
 
 		main.getChildren().addAll(muenzenLab, muenzen, scheineLab, scheine);
 		
+		Geld[] monies = Geld.getAllMonies();
+	
+		for(int i = 0; i < monies.length; i++){
+			Geld s = monies[i];
+			DataButton<Geld> btn = 
+					new DataButton<Geld>(s.getValueDecimal() + "€", new Dimension(70, 30), s);
+			btn.setOnAction(evts.getButtonMoney());
 		
-		//----------collect all money types and sort them accordingly
-		Geld[] valid = Geld.validMonies;
-		Geld[] invalid = Geld.unvalidMonies;
-		Geld[] allMonies = new Geld[Geld.getTotalCount()];
-		
-		int validPos = 0;
-		int invalidPos = 0;
-		for(int i = 0; i < allMonies.length; i++)
-		{
-			Geld va = valid[validPos];
-			Geld in = invalid[invalidPos];
-			
-			if(va.getTotalId() < in.getTotalId())
-			{
-				allMonies[i] = valid[validPos];
-				if(validPos < valid.length)
-					validPos++;
-			}
+			if(btn.getDataField().isBill())
+				scheine.getChildren().add(btn);
 			else
-			{
-				allMonies[i] = invalid[invalidPos];
-				if(invalidPos < invalid.length)
-					invalidPos++;
-			}
-		}
-		
-		//end: collect money types
-		
-		
-		
-		for(int i = 0; i < 8; i++)
-		{
-			DataButton<Geld> btn = new DataButton<Geld>("0", new Dimension(40, 30));
-			muenzen.getChildren().add(btn);
-		}
-		
-		for(int i = 0; i < 7; i++)
-		{
-			DataButton<Geld> btn = new DataButton<Geld>("0", new Dimension(40, 30));
-			scheine.getChildren().add(btn);
+				muenzen.getChildren().add(btn);	
 		}
 		
 		
 		this.setTitle("Geldbörse");
 		this.setScene(new Scene(main));
-		this.setWidth(212);
+		this.setWidth(300);
 		//this.sizeToScene();
 	}
 }

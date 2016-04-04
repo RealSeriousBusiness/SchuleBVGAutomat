@@ -8,40 +8,40 @@ package de.oszimt.fos.fahrkartenautomat.model;
 public class Fahrkartentyp {
 	public final static Fahrkartentyp[] tickets;
 	private String name;
-	private double price;
-	private double fourway;
+	private int price;
+	private int fourway;
 	private String description;
-	private double validFor;
+	private int validFor;
 	private int id;
 	static private int lastId = 0;
 	
-	public Fahrkartentyp(String name, double price, double fourway)
+	public Fahrkartentyp(String name, int price, int fourway)
 	{
-		this(name, price, fourway, "", 0.0);
+		this(name, price, fourway, "", 0);
 	}
 	
-	public Fahrkartentyp(String name, double price, double fourway, String description, double validFore)
+	public Fahrkartentyp(String name, int price, int fourway, String description, int validFor)
 	{
 		id = lastId++;
 		this.name = name;
 		this.price = price;
 		this.fourway = fourway;
 		this.description = description;
-		this.validFor = validFore;
+		this.validFor = validFor;
 	}
 	
 	//Generiert Fahrkarten
 	static
 	{
 		tickets = new Fahrkartentyp[]{
-				new Fahrkartentyp("Einzelfahrschein AB", 2.70, 9.00),
-				new Fahrkartentyp("Einzelfahrschein BC", 3.00, -1),
-				new Fahrkartentyp("Einzelfahrschein ABC ", 3.30, -1),
-				new Fahrkartentyp("Einzel erm‰ﬂigt AB", 1.70, 5.60),
-				new Fahrkartentyp("Einzel erm‰ﬂigt BC", 2.10, -1),
-				new Fahrkartentyp("Einzel erm‰ﬂigt ABC", 2.40, -1),
-				new Fahrkartentyp("Kurzstrecke", 1.70, 5.60),
-				new Fahrkartentyp("Kurzstrecke erm‰ﬂigt", 1.30, 4.40)
+				new Fahrkartentyp("Einzelfahrschein AB", 270, 900),
+				new Fahrkartentyp("Einzelfahrschein BC", 300, -1),
+				new Fahrkartentyp("Einzelfahrschein ABC ", 330, -1),
+				new Fahrkartentyp("Einzel erm‰ﬂigt AB", 170, 560),
+				new Fahrkartentyp("Einzel erm‰ﬂigt BC", 210, -1),
+				new Fahrkartentyp("Einzel erm‰ﬂigt ABC", 240, -1),
+				new Fahrkartentyp("Kurzstrecke", 170, 560),
+				new Fahrkartentyp("Kurzstrecke erm‰ﬂigt", 130, 440)
 		};
 	}
 	
@@ -49,12 +49,20 @@ public class Fahrkartentyp {
 		return name;
 	}
 	
-	public double getPrice() {
+	public int getPrice() {
 		return price;
 	}
 	
-	public double getFourway() {
+	public double getPriceDecimal(){
+		return (double)price / 100.0;
+	}
+	
+	public int getFourway() {
 		return fourway;
+	}
+	
+	public double getFourwayDecimal() {
+		return (double)fourway / 100.0;
 	}
 
 	public String getDescription() {
