@@ -14,7 +14,6 @@ public class PinEingabeActions {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			
 		}
 	};
 	
@@ -23,7 +22,6 @@ public class PinEingabeActions {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			
 		}
 	};
 	
@@ -32,7 +30,6 @@ public class PinEingabeActions {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			
 		}
 	};
 

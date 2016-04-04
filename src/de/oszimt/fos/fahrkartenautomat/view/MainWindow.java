@@ -57,7 +57,6 @@ public class MainWindow extends Application implements AutomatUpdater {
 	public void handle(Ausgaben type, Object payload) {
 		switch (type) {
 		case SELECT_UPDATE:
-			System.out.println("WTF DONT CALL ME YOU SON OF A BITCH" + payload);
 			if(!(payload instanceof Integer))
 				return;
 			if(lastSelected > -1)
@@ -212,7 +211,7 @@ public class MainWindow extends Application implements AutomatUpdater {
 
 	public static void main(String argv[]) {
 		// TODO Auto-generated method stub
-		System.out.println("well hello...");
+		System.out.println("Started...");
 		launch(argv);
 		
 	}

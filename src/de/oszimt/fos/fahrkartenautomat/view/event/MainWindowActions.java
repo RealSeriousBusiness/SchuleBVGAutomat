@@ -30,7 +30,6 @@ public class MainWindowActions {
 			DataButton<Fahrkartentyp> tBtn = (DataButton<Fahrkartentyp>)src;
 			Fahrkartentyp ticket = tBtn.getDataField();
 			auftrag.selectTicket(ticket);
-			System.out.println("selected: " + ticket.getName()); 
 		}
 	};
 
@@ -39,7 +38,6 @@ public class MainWindowActions {
 		@Override
 		public void handle(ActionEvent event) {
 			auftrag.reset();
-			System.out.println("resetted.");
 		}
 	};
 	
@@ -47,7 +45,6 @@ public class MainWindowActions {
 
 		@Override
 		public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-			System.out.println("changed." + oldValue + "new " + newValue);
 			auftrag.setTicketCount(newValue);
 		}
 	};
