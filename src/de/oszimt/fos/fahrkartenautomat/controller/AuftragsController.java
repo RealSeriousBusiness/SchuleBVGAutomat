@@ -51,18 +51,18 @@ public class AuftragsController {
 		setTicketCount((countFourways * 4) + countSingles);
 	}
 
-	public void setTicketCount(int count){
+	public void setTicketCount(int cntInSingles){
 		if(selectedTicket == null) return;
 		
 		if(selectedTicket.getFourway() > 0)
-			this.countFourways = count / 4;
+			this.countFourways = cntInSingles / 4;
 		
-		this.countSingles = count - (countFourways * 4);
+		this.countSingles = cntInSingles - (countFourways * 4);
 
 		toPay = (selectedTicket.getPrice() * countSingles) + 
 				(selectedTicket.getFourway() * countFourways);
 		
-		device.selection(selectedTicket.getId(), count, Geld.toDecimal(toPay));
+		device.selection(selectedTicket.getId(), cntInSingles, Geld.toDecimal(toPay));
 	}
 	
 	public void insertCash(Geld cash){
