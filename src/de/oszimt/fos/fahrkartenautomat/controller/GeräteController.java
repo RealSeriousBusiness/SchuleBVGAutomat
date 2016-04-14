@@ -7,7 +7,7 @@ import de.oszimt.fos.fahrkartenautomat.view.event.AutomatUpdater;
 
 
 /**
- * @author Alex
+ * @author name
  * Speichert aktuelle Bestände ab
  * Generiert die Ausgaben
  */
@@ -47,6 +47,7 @@ public class GeräteController
 		src.handle(Ausgaben.SELECT_UPDATE, -1);
 		src.handle(Ausgaben.TOPAY_UPDATE, "0.00 €");
 		src.handle(Ausgaben.PAID_UPDATE, "0.00 €");
+		src.handle(Ausgaben.SPINNER_UPDATE, 0);
 	}
 	
 	public void insertedMoney(double money)

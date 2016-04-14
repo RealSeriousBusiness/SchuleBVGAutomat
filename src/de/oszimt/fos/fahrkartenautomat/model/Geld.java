@@ -1,5 +1,8 @@
 package de.oszimt.fos.fahrkartenautomat.model;
 
+/**
+ * @author name
+ */
 public class Geld {
 	public final static Geld[] validMonies;
 	public final static Geld[] invalidMonies;

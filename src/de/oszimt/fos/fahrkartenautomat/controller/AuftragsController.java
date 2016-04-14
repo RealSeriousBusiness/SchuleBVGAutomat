@@ -47,6 +47,7 @@ public class AuftragsController {
 	}
 	
 	public void selectTicket(Fahrkartentyp ticket){
+		reset(); //fix is dirty af, please redo 
 		this.selectedTicket = ticket;
 		setTicketCount((countFourways * 4) + countSingles);
 	}
@@ -55,13 +56,13 @@ public class AuftragsController {
 		if(selectedTicket == null) return;
 		
 		if(selectedTicket.getFourway() > 0)
-			this.countFourways = cntInSingles / 4;
-		
+				this.countFourways = cntInSingles / 4;
+			
 		this.countSingles = cntInSingles - (countFourways * 4);
 
 		toPay = (selectedTicket.getPrice() * countSingles) + 
-				(selectedTicket.getFourway() * countFourways);
-		
+					(selectedTicket.getFourway() * countFourways);
+
 		device.selection(selectedTicket.getId(), cntInSingles, Geld.toDecimal(toPay));
 	}
 	

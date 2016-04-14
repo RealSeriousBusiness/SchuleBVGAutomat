@@ -9,6 +9,8 @@ public enum Ausgaben {
 	NORMAL_TEXT, 
 	RED_TEXT, 
 	
+	SPINNER_UPDATE,
+	
 	OUT_OF_ORDER
 
 }

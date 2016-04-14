@@ -44,6 +44,7 @@ public class MainWindow extends Application implements AutomatUpdater {
 	TextField tfPaid  = new TextField();
 	TextField tfToPay = new TextField();
 	TextFlow output = new TextFlow();
+	Spinner<Integer> ticketCounter;
 	
 
 	public MainWindow() {
@@ -85,9 +86,15 @@ public class MainWindow extends Application implements AutomatUpdater {
 			t2.setFill(Color.RED);
 			output.getChildren().add(t2);
 			break;
-		case OUT_OF_ORDER:
+			
+		case SPINNER_UPDATE: //dirty af
+			if(ticketCounter != null && payload instanceof Integer)
+				ticketCounter.getValueFactory().setValue((int)payload);
 			break;
 			
+		case OUT_OF_ORDER:
+			break;
+
 		default:
 			break;
 		}
@@ -155,7 +162,7 @@ public class MainWindow extends Application implements AutomatUpdater {
 		pnZuZahlen.getChildren().addAll(lbZahlbetrag, tfToPay);
 		
 		HBox pnAnzahl = new HBox(10);
-		Spinner<Integer> ticketCounter = new Spinner<Integer>(1, 100, 1); //min, max, initValue
+		ticketCounter = new Spinner<Integer>(1, 100, 1); //min, max, initValue
 		
 
 		ticketCounter.valueProperty().addListener(evts.getSpinnerCount());

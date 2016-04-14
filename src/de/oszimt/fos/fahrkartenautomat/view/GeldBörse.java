@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 
 /**
- * @author Alex
+ * @author name
  * Erlaubt Einwurf von Geld in die Machine
  */
 public class GeldBörse extends Stage {
